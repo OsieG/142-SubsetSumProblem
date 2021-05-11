@@ -47,15 +47,23 @@ def cellMax(mat2D,n,i,limit):
         n+=1
     return mat2D
 
-def backtracking(mat2D,setNum):
+def backtracking(mat2D,setNum,x):
     n = len(setNum)
     solution = []
-    for i in range(n):
-        if mat2D[:,i] == 1:
-            solution.append(setNum[i])
-            break
-
-#-------------------------------------------------------------------------
+    lim = -1*x
+    skipCounter = 0
+    for i in range(-1,lim,-1):
+        if skipCounter != 0:
+            skipCounter-=1
+            continue
+        arr = mat2D[:,i]
+        for j in range(n):
+            if arr[j] == 1:
+                solution.append(setNum[j])
+                skipCounter = setNum[j]-1
+                break
+    return solution
+#-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 sizeOfSet, setOfNum, targetSum = initialValues()
 setOfNum = sortSet(setOfNum)
@@ -73,7 +81,5 @@ if matrix2D[sizeOfSet-1,targetSum] != 1:                #checker if there's a so
     print("There's no subset for the target value...\nProgram will now exit...")
     raise SystemExit
 
-#backtracking(matrix2D,setOfNum)
-
-
-print(matrix2D)
+ans = backtracking(matrix2D,setOfNum,targetSum+1)
+print(ans)
